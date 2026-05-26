@@ -4,6 +4,7 @@ import { eliminarVehiculo, alquilarVehiculo } from '../services/api';
 
 const TarjetaVehiculo = ({ vehiculo, onAlquilar, onEliminar, onError }) => {
     const [mostrarFormAlquilar, setMostrarFormAlquilar] = useState(false);
+    const [mostrarDetalle, setMostrarDetalle] = useState(false);
     const [nombreCliente, setNombreCliente] = useState('');
 
     const cerrarForm = () => {
@@ -22,7 +23,7 @@ const TarjetaVehiculo = ({ vehiculo, onAlquilar, onEliminar, onError }) => {
     };
 
     const handleEliminar = () => {
-        if (!window.confirm(`¿Eliminar el vehículo ${vehiculo.marca} ${vehiculo.modelo}?`)) {
+        if (!window.confirm(`¿Eliminar el vehículo ${vehiculo.marca}?`)) {
             return;
         }
         eliminarVehiculo(vehiculo.id)
@@ -33,12 +34,17 @@ const TarjetaVehiculo = ({ vehiculo, onAlquilar, onEliminar, onError }) => {
     return (
         <div className="vehiculo-card">
             <div className="vehiculo-card-header">
-                <h3>{vehiculo.marca} {vehiculo.modelo}</h3>
+                <h3>{vehiculo.marca}</h3>
                 <EstadoVehiculo disponible={vehiculo.disponible} />
             </div>
             <div className="vehiculo-card-body">
                 <p><strong>ID:</strong> {vehiculo.id}</p>
-                <p><strong>Placa:</strong> {vehiculo.placa}</p>
+                {mostrarDetalle && (
+                    <>
+                        <p><strong>Modelo:</strong> {vehiculo.modelo}</p>
+                        <p><strong>Placa:</strong> {vehiculo.placa}</p>
+                    </>
+                )}
             </div>
 
             {mostrarFormAlquilar ? (
@@ -64,8 +70,14 @@ const TarjetaVehiculo = ({ vehiculo, onAlquilar, onEliminar, onError }) => {
                         </button>
                     </div>
                 </div>
-            ) : (onAlquilar || onEliminar) && (
+            ) : (
                 <div className="vehiculo-card-footer">
+                    <button
+                        className="boton-detalle"
+                        onClick={() => setMostrarDetalle(!mostrarDetalle)}
+                    >
+                        {mostrarDetalle ? 'Ocultar detalle' : 'Ver detalle'}
+                    </button>
                     {onAlquilar && vehiculo.disponible && (
                         <button
                             className="boton-alquilar"
