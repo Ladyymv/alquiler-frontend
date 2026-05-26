@@ -1,25 +1,28 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import BarraNavegacion from './components/BarraNavegacion';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import ListaVehiculos from './pages/ListaVehiculos';
+import PanelAdmin from './pages/PanelAdmin';
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="app-layout">
+        <BarraNavegacion />
+        <div className="contenido">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/vehiculos" element={<ListaVehiculos />} />
+            <Route path="/admin" element={<PanelAdmin />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
 export default App;
